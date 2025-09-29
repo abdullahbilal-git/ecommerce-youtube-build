@@ -8,11 +8,13 @@ import { PortableText } from "next-sanity";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-type Props = {
-  slug: string;
+type ProductPageProps = {
+  params: Promise<{ slug: string }>;
 };
 
-const ProductPage = ({ slug }: Props) => {
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const { slug } = await params; // ✅ unwrap Promise<{ slug }>
+
   const [product, setProduct] = useState<any>(null);
 
   useEffect(() => {

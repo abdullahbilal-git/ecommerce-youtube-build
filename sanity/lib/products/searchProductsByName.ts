@@ -1,7 +1,8 @@
+// sanity/lib/products/searchProductsByName.ts
 import { defineQuery } from "next-sanity";
-import { sanityFetch } from "../live";
+import { sanityFetch } from "../live"; // your configured fetch function
 
-export const searchProductsByName = async (searchParam: string) => {
+const searchProductsByName = async (searchParam: string) => {
   const PRODUCTS_SEARCH_QUERY = defineQuery(`
     *[
       _type == "product" &&
@@ -15,7 +16,7 @@ export const searchProductsByName = async (searchParam: string) => {
       params: {
         searchParam: `${searchParam}*`,
       },
-      tags: ["products", `search:${searchParam}`], // ✅ cache tags
+      tags: ["products", `search:${searchParam}`], // optional caching tags
     });
 
     return products.data || [];
@@ -24,3 +25,5 @@ export const searchProductsByName = async (searchParam: string) => {
     return [];
   }
 };
+
+export default searchProductsByName;

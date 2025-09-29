@@ -1,29 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-'use client';
-
 import ProductsView from "@/components/ui/ProductsView";
 import { getAllCategories } from "@/sanity/lib/products/getAllCategories";
 import { getProductsByCategory } from "@/sanity/lib/products/getProductsByCategory";
-import { useEffect, useState } from "react";
 
-type Props = {
-  slug: string;
-};
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params; // ✅ unwrap the Promise
 
-const CategoryPage = ({ slug }: Props) => {
-  const [products, setProducts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const prods = await getProductsByCategory(slug);
-      const cats = await getAllCategories();
-      setProducts(prods);
-      setCategories(cats);
-    };
-    fetchData();
-  }, [slug]);
+  const [products, categories] = await Promise.all([
+    getProductsByCategory(slug),
+    getAllCategories(),
+  ]);
 
   return (
     <div className="flex flex-col items-center justify-top min-h-screen bg-gray-100 p-4">
@@ -39,6 +28,4 @@ const CategoryPage = ({ slug }: Props) => {
       </div>
     </div>
   );
-};
-
-export default CategoryPage;
+}
