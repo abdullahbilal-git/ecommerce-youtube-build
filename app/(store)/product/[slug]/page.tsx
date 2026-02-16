@@ -4,15 +4,15 @@ import AddToBasketButton from "@/components/ui/AddToBasketButton";
 import { imageUrl } from "@/lib/imageUrl";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { Product } from "@/sanity.types";
 
 type ProductPageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 const ProductPage = ({ params }: ProductPageProps) => {
-  const { slug } = params;
+  const { slug } = use(params);
 
   const [product, setProduct] = useState<Product | null>(null);
 
